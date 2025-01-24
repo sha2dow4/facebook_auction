@@ -123,12 +123,12 @@ def dt(X, bids):
 	calculate time from bid until time of last bid in the auction
 	calculate time from bid until time of first bid in the auction
 	'''	
-	times = bids.groupby('auction').time.min().reset_index()
+	times = bids.groupby('auction').time.min().reset_index() # start_time
 	times=times.rename(columns = {'time':'startt'})
-	times2 = bids.groupby('auction').time.max().reset_index()
+	times2 = bids.groupby('auction').time.max().reset_index() # end_time
 	times2=times2.rename(columns = {'time':'endt'})
 	
-	times = pd.merge(times, times2, on='auction', how='left')
+	times = pd.merge(times, times2, on='auction', how='left') # dataframe with both start_time and end_time and auction columns 
 	times['duration'] = times.endt - times.startt
 	times['short'] = 1.0*(times['duration'] < 3.01*one_day)
 	
